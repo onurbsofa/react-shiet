@@ -2,14 +2,23 @@ import Header from "./components/Header";
 import Guitar from "./components/Guitar";
 import Footer from "./components/Footer";
 import { db } from "./data/db";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function App() {
-  const [data, setData] = useState(db);
-  const [cart, setCart] = useState([]);
+
+  const inicialCart = () => {
+    const localCart = localStorage.getItem("cart");
+    return localCart ? JSON.parse(localCart) : [];
+  };
+
+  const [data] = useState(db);
+  const [cart, setCart] = useState(inicialCart);
+
+  useEffect(() => {
+    localStorage.setItem("cart", JSON.stringify(cart));
+  }, [cart]);
 
   function addCart(guitar) {
-
     const itemExist = cart.findIndex((item) => item.id === guitar.id);
     if (itemExist >= 0) {
       const updateCart = [...cart];
@@ -23,12 +32,43 @@ export default function App() {
     // es lo mismo que esto -> setCart((prevCart) => [...prevCart, guitar]);
   }
 
-  
+  function removeItem(id) {
+    const updateCart = cart.filter((guitar) => guitar.id !== id);
+    setCart(updateCart);
+  }
+
+  function increaseQuantity(id) {
+    const updateCart = cart.map((guitar) => {
+      if (guitar.id === id && guitar.quantity < 10) {
+        guitar.quantity++;
+      }
+      return guitar;
+    });
+    setCart(updateCart);
+  }
+
+  function decreaseQuantity(id) {
+    const updateCart = cart.map((guitar) => {
+      if (guitar.id === id && guitar.quantity > 1) {
+        guitar.quantity--;
+      }
+      return guitar;
+    });
+    setCart(updateCart);
+  }
+
+  function cleanCart() {
+    setCart([]);
+  }
 
   return (
     <>
-      <Header 
-      cart={cart}
+      <Header
+        cart={cart}
+        increaseQuantity={increaseQuantity}
+        decreaseQuantity={decreaseQuantity}
+        removeItem={removeItem}
+        cleanCart={cleanCart}
       />
 
       <main className="container-xl mt-5">
