@@ -47,3 +47,4 @@
         - useEffect para actualizar el carrito en el localStorage
         - useEffect para actualizar el carrito en el localStorage y el carrito
         - funcion de state para el carrito inicial
+        -useState con use Efect para carrito dinamico y localStorage
