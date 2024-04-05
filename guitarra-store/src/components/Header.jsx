@@ -1,18 +1,15 @@
-import { useMemo } from "react";
+
 
 export default function Header({
   cart,
   increaseQuantity,
   decreaseQuantity,
   removeItem,
-  cleanCart
+  cleanCart,
+  isEmpty,
+  totalCart,
 }) {
-  //state derivado
-  const isEmpty = useMemo(() => cart.length == 0, [cart]);
-  const totalCart = useMemo(
-    () => cart.reduce((total, item) => total + item.price * item.quantity, 0),
-    [cart]
-  );
+  
 
   return (
     <header className="py-5 header">
@@ -22,7 +19,7 @@ export default function Header({
             <a href="index.html">
               <img
                 className="img-fluid"
-                src="./public/img/logo.svg"
+                src="/img/logo.svg"
                 alt="imagen logo"
               />
             </a>
@@ -31,7 +28,7 @@ export default function Header({
             <div className="carrito">
               <img
                 className="img-fluid"
-                src="./public/img/carrito.png"
+                src="/img/carrito.png"
                 alt="imagen carrito"
               />
 
